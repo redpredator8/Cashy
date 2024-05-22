@@ -1,68 +1,109 @@
-import { Image, StyleSheet, Platform, Button } from 'react-native';
-import React, { useState } from 'react';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import React from "react";
+import {
+  SafeAreaView,
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function HomeScreen({ toggleView }: { toggleView: () => void }) {
-  const onPressLearnMore = () => {
-    console.log('Learn more button pressed');
-  };
+  const insets = useSafeAreaInsets();
+
+  const part1 = "I Confirm";
+  const part2 =
+    "I wrote my Mnemonic Phrase Down, I understand if I Lose it, my funds will be lost.";
 
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }
-    >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Here's your Mnemonic wallet!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Write it down!</ThemedText>
-        <ThemedText>
+    <SafeAreaView style={[styles.safeArea, { paddingTop: insets.top }]}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Choose your Mnemonic phrase</Text>
+        <View style={styles.phraseContainer}>
+          {Array.from({ length: 12 }, (_, index) => (
+            <View key={index} style={styles.phraseBox}>
+              <Text style={styles.phraseText}>Potato</Text>
+            </View>
+          ))}
+        </View>
+        <Text style={styles.subtitle}>Your Phrase</Text>
+        <Text style={styles.mnemonicText}>
           Potato Potato Potato Potato Potato Potato Potato Potato Potato Potato
           Potato Potato
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Button
-          onPress={onPressLearnMore}
-          title="Save to iCloud"
-          accessibilityLabel="Learn more about this purple button"
-        />
-        <Button
-          onPress={toggleView}
-          title="Explore"
-          accessibilityLabel="Explore"
-        />
-      </ThemedView>
-    </ParallaxScrollView>
+        </Text>
+        <TouchableOpacity style={styles.confirmButton} onPress={toggleView}>
+          <Text style={styles.confirmButtonText}>{part1}</Text>
+          <Text style={styles.confirmButtonSubText}>{part2}</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#f8f8f8",
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8
+  container: {
+    flex: 1,
+    padding: 16,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute'
-  }
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#5a67d8",
+    marginBottom: 16,
+  },
+  phraseContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    marginBottom: 24,
+  },
+  phraseBox: {
+    width: "28%",
+    margin: "1%",
+    padding: 12,
+    backgroundColor: "#e2e8f0",
+    alignItems: "center",
+    borderRadius: 8,
+  },
+  phraseText: {
+    fontSize: 16,
+    color: "#2d3748",
+  },
+  subtitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#5a67d8",
+    marginBottom: 8,
+  },
+  mnemonicText: {
+    fontSize: 18,
+    color: "#2d3748",
+    textAlign: "center",
+    marginBottom: 24,
+  },
+  confirmButton: {
+    backgroundColor: "red",
+    padding: 16,
+    borderRadius: 20,
+    alignItems: "center",
+    borderWidth: 2,
+    borderColor: "black",
+  },
+
+  confirmButtonText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  confirmButtonSubText: {
+    fontSize: 14,
+    color: "#fff",
+    textAlign: "center",
+  },
 });
